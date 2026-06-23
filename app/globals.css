@@ -1,0 +1,133 @@
+/* v2 — light identity system */
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Core palette — warm off-white base */
+  --background: #faf9f7;
+  --foreground: #0a0a0a;
+  --muted: #f0ede9;
+  --muted-foreground: #737373;
+  --border: rgba(10, 10, 10, 0.08);
+  --card: #f5f3f0;
+  --card-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #faf9f7;
+  --radius: 0.75rem;
+
+  /* Extended tokens */
+  --surface: rgba(10, 10, 10, 0.04);
+  --surface-hover: rgba(10, 10, 10, 0.07);
+  --divider: rgba(10, 10, 10, 0.08);
+  --text-dim: #a8a29e;      /* stone-400 equivalent */
+  --text-subtle: #737373;   /* neutral-500 */
+
+  /* Mesh gradient colors (animated bg) */
+  --mesh-1: rgba(212, 212, 216, 0.55);
+  --mesh-2: rgba(228, 228, 231, 0.4);
+  --mesh-3: rgba(245, 243, 240, 0.8);
+  --mesh-4: rgba(214, 211, 209, 0.5);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply font-sans;
+    background-color: var(--background);
+    color: var(--foreground);
+    scroll-behavior: auto;
+    cursor: none;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'kern' 1, 'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(10, 10, 10, 0.1);
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+
+  a, button {
+    cursor: none;
+  }
+}
+
+/* Animated gradient mesh background */
+@keyframes mesh-drift-1 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33%       { transform: translate(4%, -6%) scale(1.08); }
+  66%       { transform: translate(-3%, 4%) scale(0.95); }
+}
+@keyframes mesh-drift-2 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  40%       { transform: translate(-5%, 3%) scale(1.06); }
+  70%       { transform: translate(3%, -5%) scale(0.97); }
+}
+@keyframes mesh-drift-3 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  50%       { transform: translate(6%, 5%) scale(1.05); }
+}
+
+@layer utilities {
+  /* Noise texture */
+  .noise::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  .text-dim {
+    color: var(--text-dim);
+  }
+
+  .text-subtle {
+    color: var(--text-subtle);
+  }
+
+  .surface {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+  }
+}
